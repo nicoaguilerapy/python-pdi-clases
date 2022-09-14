@@ -1,26 +1,34 @@
 from PIL import Image
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def getHistogram(path):
-  img = Image.open(path)
+def getHistogram(X):
   result = np.zeros((256))
-
-  for y in range(img.height):
-    for x in range(img.width):
-      pixel = img.getpixel((x, y))
-      try:
-        result[pixel] += 1
-      except:
-        result[pixel[0]] += 1
-
+  (N,M)=X.shape
+  for i in range(N):
+      for j in range(M):
+        try:
+          result[X[i,j]] += 1
+        except:
+          result[X[i]] += 1
+  
   arr = np.sort(result)[::-1]
   for i in range(3):
       print("{}: {}".format(i, arr[i]))
 
-  plt.plot(result)
-  plt.show()
+  return result
+             
 
+# # img = cv2.imread('imgs/lung_cancer.jpg')
+# # img = img[:,:,0]
+
+# # cv2.imshow('Original', img)
+# # r = getHistogram(img)
+
+# # plt.plot(r)
+# # plt.show()
+# # cv2.waitKey(0)
 
 
 
